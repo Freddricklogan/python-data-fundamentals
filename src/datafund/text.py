@@ -51,29 +51,20 @@ def election_text(s: ElectionSummary) -> str:
         "-------------------------",
     ]
     lines += [f"  {c.name}: {c.share:.1f}% ({c.votes:,})" for c in s.counties]
-    largest = (
-        s.largest_counties[0]
-        if len(s.largest_counties) == 1
-        else "tie: " + ", ".join(s.largest_counties)
-    )
     lines += [
         "-------------------------",
-        f"Largest County Turnout: {largest}",
+        f"Largest County Turnout: {s.largest_county_label}",
         "-------------------------",
         "",
         "Candidate Votes:",
         "-------------------------",
     ]
     lines += [f"  {c.name}: {c.share:.3f}% ({c.votes:,})" for c in s.candidates]
-    lines.append("-------------------------")
-    if s.tie:
-        lines.append("Winner: tie between " + ", ".join(s.winners))
-    else:
-        lines.append(f"Winner: {s.winners[0]}")
-    top = max(c.votes for c in s.candidates)
     lines += [
-        f"Winning Vote Count: {top:,}",
-        f"Winning Percentage: {top / s.total_votes * 100:.3f}%",
+        "-------------------------",
+        f"Winner: {s.winner_label}",
+        f"Winning Vote Count: {s.winning_votes:,}",
+        f"Winning Percentage: {s.winning_share:.3f}%",
         "=========================",
     ]
     return "\n".join(lines) + "\n"

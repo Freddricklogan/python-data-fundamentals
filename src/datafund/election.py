@@ -38,6 +38,24 @@ class ElectionSummary:
     def tie(self) -> bool:
         return len(self.winners) > 1
 
+    @property
+    def winning_votes(self) -> int:
+        return max(c.votes for c in self.candidates)
+
+    @property
+    def winning_share(self) -> float:
+        return self.winning_votes / self.total_votes * 100
+
+    @property
+    def winner_label(self) -> str:
+        return "tie between " + ", ".join(self.winners) if self.tie else self.winners[0]
+
+    @property
+    def largest_county_label(self) -> str:
+        if len(self.largest_counties) == 1:
+            return self.largest_counties[0]
+        return "tie: " + ", ".join(self.largest_counties)
+
 
 def parse_ballots(stream: TextIO) -> list[Ballot]:
     """Rows of `Ballot ID,County,Candidate`. Header required; duplicate ballot IDs rejected."""

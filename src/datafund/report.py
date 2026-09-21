@@ -16,6 +16,12 @@ PKG = Path(__file__).parent
 SHELL_DIR = PKG / "shell"
 TEMPLATES = PKG / "templates"
 PAGES_URL = "https://freddricklogan.github.io/python-data-fundamentals/"
+ASSETS = (
+    SHELL_DIR / "exec-shell.css",
+    SHELL_DIR / "exec-shell.js",
+    PKG / "report.js",
+    TEMPLATES / "report.css",
+)
 
 
 def _row(cells: list[str], head: bool = False) -> str:
@@ -97,14 +103,16 @@ def render_html(budget: Path, election: Path, pages: str = PAGES_URL) -> str:
     bs = summarize_budget(periods)
     es = tally(read_ballots(election))
     tpl = Template((TEMPLATES / "page.html").read_text(encoding="utf-8"))
-    data = {
+    inc, dec = bs.greatest_increase, bs.greatest_decrease
+    # One set of figures feeds both the shell's KPIs (JSON) and the page text.
+    data: dict[str, object] = {
         "months": bs.total_months,
         "netTotal": bs.net_total,
         "averageChange": bs.average_change,
-        "greatestIncrease": bs.greatest_increase.label if bs.greatest_increase else None,
-        "greatestIncreaseAmount": bs.greatest_increase.amount if bs.greatest_increase else None,
-        "greatestDecrease": bs.greatest_decrease.label if bs.greatest_decrease else None,
-        "greatestDecreaseAmount": bs.greatest_decrease.amount if bs.greatest_decrease else None,
+        "greatestIncrease": inc.label if inc else None,
+        "greatestIncreaseAmount": inc.amount if inc else None,
+        "greatestDecrease": dec.label if dec else None,
+        "greatestDecreaseAmount": dec.amount if dec else None,
         "profitMonths": bs.profit_months,
         "lossMonths": bs.loss_months,
         "volatility": bs.volatility,
@@ -113,7 +121,7 @@ def render_html(budget: Path, election: Path, pages: str = PAGES_URL) -> str:
         "counties": len(es.counties),
         "winner": es.winner,
         "winners": list(es.winners),
-        "winnerShare": max(c.share for c in es.candidates),
+        "winnerShare": es.winning_share,
         "largestCounty": es.largest_counties[0] if len(es.largest_counties) == 1 else None,
     }
     return tpl.substitute(
@@ -123,10 +131,10 @@ def render_html(budget: Path, election: Path, pages: str = PAGES_URL) -> str:
         months=str(bs.total_months),
         net_total=f"{bs.net_total:,}",
         avg=f"{bs.average_change:,.2f}" if bs.average_change is not None else "n/a",
-        inc=html.escape(bs.greatest_increase.label) if bs.greatest_increase else "n/a",
-        inc_v=f"{bs.greatest_increase.amount:,}" if bs.greatest_increase else "",
-        dec=html.escape(bs.greatest_decrease.label) if bs.greatest_decrease else "n/a",
-        dec_v=f"{bs.greatest_decrease.amount:,}" if bs.greatest_decrease else "",
+        inc=html.escape(inc.label) if inc else "n/a",
+        inc_v=f"{inc.amount:,}" if inc else "",
+        dec=html.escape(dec.label) if dec else "n/a",
+        dec_v=f"{dec.amount:,}" if dec else "",
         profit_months=str(bs.profit_months),
         loss_months=str(bs.loss_months),
         volatility=f"{bs.volatility:,.0f}" if bs.volatility is not None else "n/a",
@@ -134,13 +142,9 @@ def render_html(budget: Path, election: Path, pages: str = PAGES_URL) -> str:
         budget_table=_budget_table(periods, bs),
         budget_text=html.escape(budget_text(bs)),
         total_votes=f"{es.total_votes:,}",
-        winner=html.escape(es.winner or "tie: " + ", ".join(es.winners)),
-        winner_share=f"{max(c.share for c in es.candidates):.3f}",
-        largest_county=html.escape(
-            es.largest_counties[0]
-            if len(es.largest_counties) == 1
-            else "tie: " + ", ".join(es.largest_counties)
-        ),
+        winner=html.escape(es.winner_label),
+        winner_share=f"{es.winning_share:.3f}",
+        largest_county=html.escape(es.largest_county_label),
         election_tables=_election_tables(es),
         election_text=html.escape(election_text(es)),
         report_json=json.dumps(data),
@@ -150,10 +154,8 @@ def render_html(budget: Path, election: Path, pages: str = PAGES_URL) -> str:
 def write_report(out: Path, budget: Path, election: Path, pages: str = PAGES_URL) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     (out / "src").mkdir(exist_ok=True)
-    shutil.copy(SHELL_DIR / "exec-shell.css", out / "src" / "exec-shell.css")
-    shutil.copy(SHELL_DIR / "exec-shell.js", out / "src" / "exec-shell.js")
-    shutil.copy(PKG / "report.js", out / "src" / "report.js")
-    shutil.copy(TEMPLATES / "report.css", out / "src" / "report.css")
+    for asset in ASSETS:
+        shutil.copy(asset, out / "src" / asset.name)
     (out / "index.html").write_text(render_html(budget, election, pages), encoding="utf-8")
     shutil.copy(budget, out / budget.name)
     shutil.copy(election, out / election.name)
