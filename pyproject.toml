@@ -1,0 +1,58 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "datafund"
+version = "1.0.0"
+description = "PyBank and PyPoll consolidated: budget and election analysis over CSV files with a typer CLI, tests, text reports that match the originals, and a static HTML report."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Freddrick Logan" }]
+dependencies = ["typer>=0.12"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-cov>=5.0", "ruff>=0.6", "mypy>=1.11", "bandit>=1.7", "pip-audit>=2.7"]
+
+[project.scripts]
+datafund = "datafund.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/datafund"]
+
+[tool.hatch.build]
+include = ["src/datafund/**"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "C4", "DTZ", "S", "SIM", "RUF", "T20", "PTH", "RET", "ARG"]
+ignore = ["B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "ARG001"]
+"src/datafund/cli.py" = ["T20"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["datafund"]
+omit = ["src/datafund/cli.py"]
+
+[tool.coverage.report]
+show_missing = true

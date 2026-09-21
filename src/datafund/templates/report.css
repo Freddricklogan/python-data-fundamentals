@@ -1,0 +1,20 @@
+.md-note { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; font-size: .84rem; color: var(--muted); margin: 0 0 14px; }
+.md-note code { font-family: var(--shell-mono); color: var(--text); }
+.md-panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+.md-panel h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.md-panel h4 { margin: 12px 0 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.md-lead { font-size: .84rem; color: var(--muted); margin: 0 0 12px; }
+.md-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 900px) { .md-grid { grid-template-columns: minmax(0, 1fr); } }
+.md-scroll { overflow-x: auto; margin-bottom: 12px; max-height: 360px; overflow-y: auto; }
+.md-chart { width: 100%; height: auto; display: block; }
+.md-axis { fill: none; stroke: var(--border); }
+.md-bar { fill: #3fb950; fill-opacity: .85; }
+.md-bar--neg { fill: #f85149; }
+.md-tick { fill: var(--muted); font-size: 10px; }
+.md-table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.md-table td, .md-table th { padding: 5px 6px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.md-table td:first-child, .md-table th:first-child { text-align: left; }
+.md-table th { font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); position: sticky; top: 0; background: var(--panel); }
+.md-pre { font-family: var(--shell-mono); font-size: .78rem; background: rgba(0,0,0,.25); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; overflow-x: auto; margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
