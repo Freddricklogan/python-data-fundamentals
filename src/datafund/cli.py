@@ -15,9 +15,13 @@ app = typer.Typer(add_completion=False, help=__doc__)
 DATA = Path(__file__).resolve().parents[2] / "data"
 
 
-@app.callback()
-def _root() -> None:
-    """Python data fundamentals: PyBank and PyPoll as one tested package."""
+def _emit(text: str, out: Path | None) -> None:
+    """Print the report; also write it when --out is given (the originals did both)."""
+    typer.echo(text, nl=False)
+    if out:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(text, encoding="utf-8")
+        typer.echo(f"Analysis exported to {out}")
 
 
 @app.command()
@@ -26,12 +30,7 @@ def budget(
     out: Path | None = typer.Option(None, "--out", help="Also write the report to this file"),
 ) -> None:
     """Financial analysis of a budget CSV (the PyBank exercise)."""
-    text = budget_text(summarize_budget(read_budget(path)))
-    typer.echo(text, nl=False)
-    if out:
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(text, encoding="utf-8")
-        typer.echo(f"Analysis exported to {out}")
+    _emit(budget_text(summarize_budget(read_budget(path))), out)
 
 
 @app.command()
@@ -42,12 +41,7 @@ def election(
     out: Path | None = typer.Option(None, "--out", help="Also write the report to this file"),
 ) -> None:
     """Vote tally of a ballots CSV (the PyPoll / Election-Analysis exercise)."""
-    text = election_text(tally(read_ballots(path)))
-    typer.echo(text, nl=False)
-    if out:
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(text, encoding="utf-8")
-        typer.echo(f"Analysis exported to {out}")
+    _emit(election_text(tally(read_ballots(path))), out)
 
 
 @app.command()

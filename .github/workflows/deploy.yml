@@ -23,6 +23,7 @@ env:
 jobs:
   lint:
     name: Lint (ruff + mypy --strict)
+    if: github.event_name != 'schedule'   # the weekly cron is for link-check only
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,6 +32,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
       - run: uv venv --clear && uv pip install -e ".[dev]"
       - run: uv run ruff check --output-format=github .
       - run: uv run ruff format --check .
@@ -69,6 +71,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
       - run: uv venv --clear && uv pip install -e ".[dev]"
       - run: uv run pytest --cov --cov-report=term --cov-report=xml
       - uses: actions/upload-artifact@v4
@@ -87,8 +90,9 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
       - run: uv venv --clear && uv pip install -e .
-      - run: uv run datafund report --out dist
+      - run: make build   # the Makefile's build target is the one per-repo line
       - uses: actions/upload-artifact@v4
         with:
           name: dist
@@ -106,6 +110,7 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+          enable-cache: true
       - run: uv venv --clear && uv pip install -e ".[dev]"
       - run: uv run bandit -q -r src
       - run: uv run pip-audit --skip-editable

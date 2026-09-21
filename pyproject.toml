@@ -21,12 +21,8 @@ datafund = "datafund.cli:app"
 [tool.hatch.build.targets.wheel]
 packages = ["src/datafund"]
 
-[tool.hatch.build]
-include = ["src/datafund/**"]
-
 [tool.ruff]
 line-length = 100
-target-version = "py312"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
@@ -37,11 +33,7 @@ ignore = ["B008"]
 "tests/*" = ["S101", "ARG001"]
 "src/datafund/cli.py" = ["T20"]
 
-[tool.ruff.format]
-quote-style = "double"
-
 [tool.mypy]
-python_version = "3.12"
 strict = true
 files = ["src", "tests"]
 warn_unreachable = true

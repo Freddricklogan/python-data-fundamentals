@@ -4,7 +4,7 @@ import { mountExecShell } from './exec-shell.js';
 const data = JSON.parse(document.getElementById('report-data').textContent);
 const money = (n) => (n === null ? 'n/a' : `$${Math.round(n).toLocaleString()}`);
 
-const shell = mountExecShell({
+mountExecShell({
   title: 'Python Data Fundamentals',
   tagline: 'PyBank and PyPoll — four small script repositories — consolidated into one package: CSV parsing that rejects bad input, budget and election analysis with the edge cases the scripts ignored (no changes, all-negative changes, ties), text reports that reproduce the originals byte for byte, a typer CLI, tests, and this static report computed at build time.',
   repo: 'https://github.com/Freddricklogan/python-data-fundamentals',
@@ -23,4 +23,3 @@ const shell = mountExecShell({
     { selector: '#s-election', title: 'The tally, with ties made visible', body: `${data.totalVotes.toLocaleString()} ballots across ${data.candidates} candidates and ${data.counties} counties. ${data.winner ? `${data.winner} wins with ${data.winnerShare.toFixed(3)}%` : 'The result is a tie'}; the original scripts would have picked the first name seen and said nothing.` }
   ]
 });
-shell.refreshKpis();

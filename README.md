@@ -94,7 +94,7 @@ uv run datafund report --out dist            # then open dist/index.html
 | Check | Result |
 | --- | --- |
 | Tests (pytest) | **14 passed / 14** |
-| Coverage | **100%** statements (240) over `datafund` (CLI excluded) |
+| Coverage | **100%** statements (248) over `datafund` (CLI excluded) |
 | ruff, ruff format, mypy --strict | clean (9 source files) |
 | bandit, pip-audit | 0 findings; no known vulnerabilities |
 | PyBank dataset | 86 months, total $38,382,578, average change $−2,315.12, greatest increase Feb-12 ($1,926,159), greatest decrease Sep-13 ($−2,196,167) |
