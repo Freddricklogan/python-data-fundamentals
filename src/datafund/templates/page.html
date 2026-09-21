@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Python Data Fundamentals — PyBank and PyPoll as one tested package</title>
+<meta name="description" content="The PyBank and PyPoll exercises consolidated into one Python package with a CLI, tests and a static report: profit/loss analysis of a budget CSV and a vote tally of a ballots CSV, computed at build time. By Freddrick Logan.">
+<meta name="author" content="Freddrick Logan">
+<link rel="canonical" href="$pages">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Cpath d='M7 22l5-6 4 3 4-8 5 4' fill='none' stroke='%2358a6ff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap">
+<link rel="stylesheet" href="src/exec-shell.css">
+<link rel="stylesheet" href="src/report.css">
+<script type="application/json" id="report-data">$report_json</script>
+</head>
+<body>
+<main id="demo-root" class="exec-main">
+  <h2 class="sr-only">Python data fundamentals report</h2>
+  <p class="md-note"><strong>Data:</strong> <a href="$budget_file">$budget_file</a> ($months months) and <a href="$election_file">$election_file</a> ($total_votes ballots), the CSVs the original exercises shipped with. Every figure on this page was computed by <code>datafund report</code> in the CI run that published it; the same functions back the CLI and the tests.</p>
+
+  <section class="md-panel" id="s-budget" aria-labelledby="h-budget">
+    <h3 id="h-budget">1. Budget analysis (PyBank)</h3>
+    <p class="md-lead">$months months, net total <strong>$$$net_total</strong>, average month-over-month change <strong>$$$avg</strong>. Greatest increase <strong>$inc</strong> ($$$inc_v); greatest decrease <strong>$dec</strong> ($$$dec_v). $profit_months profitable months, $loss_months loss months; sample standard deviation of the monthly change $$$volatility.</p>
+    $budget_chart
+    <div class="md-scroll">$budget_table</div>
+    <h4>Text report (the original script's layout)</h4>
+    <pre class="md-pre">$budget_text</pre>
+  </section>
+
+  <section class="md-panel" id="s-election" aria-labelledby="h-election">
+    <h3 id="h-election">2. Election tally (PyPoll / Election-Analysis)</h3>
+    <p class="md-lead">$total_votes ballots. Winner <strong>$winner</strong> with $winner_share% of the vote; largest county turnout <strong>$largest_county</strong>. A tie would be reported as a tie — the original scripts silently picked whichever name they saw first.</p>
+    $election_tables
+    <h4>Text report (the original script's layout)</h4>
+    <pre class="md-pre">$election_text</pre>
+  </section>
+</main>
+<script type="module" src="src/report.js"></script>
+</body>
+</html>

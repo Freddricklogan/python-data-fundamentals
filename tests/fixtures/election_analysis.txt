@@ -1,0 +1,25 @@
+
+Election Results
+=========================
+Total Votes: 100
+=========================
+
+County Votes:
+-------------------------
+  Jefferson: 27.0% (27)
+  Denver: 49.0% (49)
+  Arapahoe: 24.0% (24)
+-------------------------
+Largest County Turnout: Denver
+-------------------------
+
+Candidate Votes:
+-------------------------
+  Charles Casper Stockham: 20.000% (20)
+  Diana DeGette: 69.000% (69)
+  Raymon Anthony Doane: 11.000% (11)
+-------------------------
+Winner: Diana DeGette
+Winning Vote Count: 69
+Winning Percentage: 69.000%
+=========================
