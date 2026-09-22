@@ -9,8 +9,8 @@
 .md-scroll { overflow-x: auto; margin-bottom: 12px; max-height: 360px; overflow-y: auto; }
 .md-chart { width: 100%; height: auto; display: block; }
 .md-axis { fill: none; stroke: var(--border); }
-.md-bar { fill: #3fb950; fill-opacity: .85; }
-.md-bar--neg { fill: #f85149; }
+.md-bar { fill: var(--ok); fill-opacity: .85; }
+.md-bar--neg { fill: var(--danger); }
 .md-tick { fill: var(--muted); font-size: 10px; }
 .md-table { width: 100%; border-collapse: collapse; font-size: .8rem; font-variant-numeric: tabular-nums; margin-top: 4px; }
 .md-table td, .md-table th { padding: 5px 6px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
