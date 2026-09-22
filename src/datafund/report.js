@@ -5,6 +5,7 @@ const data = JSON.parse(document.getElementById('report-data').textContent);
 const money = (n) => (n === null ? 'n/a' : `$${Math.round(n).toLocaleString()}`);
 
 mountExecShell({
+  theme: 'signal',
   title: 'Python Data Fundamentals',
   tagline: 'PyBank and PyPoll — four small script repositories — consolidated into one package: CSV parsing that rejects bad input, budget and election analysis with the edge cases the scripts ignored (no changes, all-negative changes, ties), text reports that reproduce the originals byte for byte, a typer CLI, tests, and this static report computed at build time.',
   repo: 'https://github.com/Freddricklogan/python-data-fundamentals',
